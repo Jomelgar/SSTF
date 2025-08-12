@@ -158,30 +158,42 @@ void lista< tipo >::imprimir() const{
 template<typename tipo>
 inline void lista<tipo>::insertarSSTF(const tipo & valor)
 {
-    nodo<tipo>* nuevo;
-    nuevo = new nodo<tipo>(valor);
-    if (this->estaVacia()) // lista vacía
-        this->insertarAlFrente(nuevo);
-    else if (nuevo < this->primeroPtr->obtenerDatos())
-    {
-        nuevo ->obtenerNuevoNodo(primeroPtr);
-        primeroPtr = nuevo;
-    }
-    else {
-        // búsqueda del nodo anterior al de inserción
-        nodo<tipo> *anterior, *p;
-        anterior = p = primeroPtr;
-        while ((p->siguientePtr()!= NULL) && (nuevo > p->obtenerDatos()))
-        {
-            anterior = p;
-            p = p ->siguientePtr();
-        }
-        if (nuevo > p->obtenerDatos()) // se inserta después del último
-            anterior = p;
-        // se procede al enlace del nuevo nodo
-        nuevo -> ponerEnlace(anterior->obtenerDatos());
-        anterior -> ponerEnlace(nuevo);
+    insertarAlFrente(valor);
+    if (!primeroPtr->siguiente) return; //Lo vacio
 
-} // fin de la función imprimi
+
+    nodo<tipo>* i = primeroPtr;
+    nodo<tipo>* cabezal = i;
+    while (i) {
+        nodo<tipo>* minNodo = i;
+        nodo<tipo>* j = i->siguiente;
+        while (j) {
+            if (j->obtenerDatos() < minNodo->obtenerDatos()) {
+                minNodo = j;
+            }
+            j = j->siguiente;
+        }
+        // Intercambiar datos de i y minNodo
+        if (minNodo != i) {
+            tipo temp = i->dato;
+            i->dato = minNodo->dato;
+            minNodo->dato = temp;
+        }
+        i = i->siguiente;
+    }
+
+    int diffAnterior = cabezal->obtenerDatos() - cabezal->anteriorPtr->obtenerDatos();
+    int diffSiguiente = cabezal->siguientePtr->obtenerDatos() - cabezal->obtenerDatos();
+
+
+    if(diffAnterior < diffSiguiente)
+    {
+        primeroPtr = cabezal->anteriorPtr;
+        //Despues que inserte los siguiente
+    }else
+    {
+        //viceversa
+    }
+}
 
 #endif // lista_H

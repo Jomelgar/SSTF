@@ -5,6 +5,11 @@
 #include<QInputDialog>
 #include <QMessageBox>
 #include <empleado.h>
+#include <list>
+#include <algorithm> // find
+#include <iterator>  // next, prev
+#include <cmath>     // abs
+#include <climits>   // INT_MAX
 #include<cola.h>
 
 QT_BEGIN_NAMESPACE
@@ -26,5 +31,6 @@ private:
     lista<int*> L;
     cola<int*> c;
     int Cil;
+    void insertarSSTF(std::list<int> &, int);
 };
 #endif // CFRAME_H
