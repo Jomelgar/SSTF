@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>cframe</class>
+ <widget class="QMainWindow" name="cframe">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>cframe</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <widget class="QLabel" name="Lbl_DNI">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>10</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>DNI:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Nombre">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>50</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Nombre:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Apellidos">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>100</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Apellidos:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Cargo">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>150</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Cargo:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Edad">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>200</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Edad:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Genero">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>250</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Género:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Lbl_Salario">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>300</y>
+          <width>54</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Salario:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="Tbx_DNI">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>10</y>
+          <width>113</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="Tbx_Nombre">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>50</y>
+          <width>331</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="Tbx_Apellidos">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>100</y>
+          <width>331</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="Tbx_Cargo">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>150</y>
+          <width>661</width>
+          <height>25</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="Spbx_Edad">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>200</y>
+          <width>42</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>127</number>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="Cbx_Genero">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>250</y>
+          <width>181</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Másculino</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Famenino</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Binario</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Otro</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ninguno</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hexadecimal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Asexual</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Planta</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Decepticon</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QDoubleSpinBox" name="Spbx_Salario">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>300</y>
+          <width>81</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <double>99999.990000000005239</double>
+        </property>
+        <property name="value">
+         <double>13000.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="Btn_Ingresar">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>370</y>
+          <width>80</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ingresar</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Tab 2</string>
+       </attribute>
+       <widget class="QTableWidget" name="Tw_Mostrar">
+        <property name="geometry">
+         <rect>
+          <x>-90</x>
+          <y>-160</y>
+          <width>771</width>
+          <height>491</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="BtnIniciar">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>70</y>
+          <width>90</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Iniciar</string>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
