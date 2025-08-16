@@ -9,6 +9,7 @@ cframe::cframe(QWidget *parent)
     c = cola<int>();
     ui->setupUi(this);
     movs = 0;
+    ui->sb_value->setMaximum(199);
     ui->tw_data->setColumnCount(1);
     ui->tw_data->setHorizontalHeaderLabels(QStringList() << "Valor");
     ui->tw_data->horizontalHeader()->setStretchLastSection(true);
