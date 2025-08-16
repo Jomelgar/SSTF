@@ -7,21 +7,25 @@ using std::cout;
 template< typename tipo >
 class lista
 {
+    friend class cframe;
 public:
     lista(); // constructor
     ~lista(); // destructor
+    void insertarOrden(const tipo &);
     void insertarAlFrente( const tipo & );
     void insertarAlFinal( const tipo & );
     bool eliminarDelFrente( tipo & );
     bool eliminarDelFinal( tipo & );
+    bool eliminar(tipo &);
     bool estaVacia() const;
     void imprimir() const;
     void insertarSSTF(const tipo &);
-private:
+protected:
     nodo< tipo > *primeroPtr; // apuntador al primer nodo
     nodo< tipo > *ultimoPtr; // apuntador al último nodo
     // función utilitaria para asignar un nuevo nodo
     nodo< tipo > *obtenerNuevoNodo( const tipo & );
+    nodo<tipo> *encontrarnodo(const tipo &);
 }; // fin de la clase lista
 
 // constructor predeterminado
@@ -52,12 +56,13 @@ lista< tipo >::~lista(){
 // inserta un nodo al frente de la lista
 template< typename tipo >
 void lista< tipo >::insertarAlFrente( const tipo &valor ){
-    nodo< tipo > *nuevoPtr = obtenerNuevoNodo( valor ); // nuevo nodo
+    nodo< tipo > *nuevoPtr = obtenerNuevoNodo( valor );
     if ( estaVacia() ) // la lista está vacía
         primeroPtr = ultimoPtr = nuevoPtr; // la nueva lista sólo tiene un nodo
     else // la lista no está vacía
     {
         nuevoPtr->siguientePtr = primeroPtr; // apunta el nuevo nodo al nodo que antes era el primero
+        primeroPtr->anteriorPtr = nuevoPtr;
         primeroPtr = nuevoPtr; // orienta primeroPtr hacia el nuevo nodo
     } // fin de else
     } // fin de la función insertarAlFrente
@@ -71,6 +76,7 @@ void lista< tipo >::insertarAlFinal( const tipo &valor ){
     else // la lista no está vacía
     {
         ultimoPtr->siguientePtr = nuevoPtr; // actualiza el nodo que antes era el último
+        nuevoPtr->anteriorPtr = ultimoPtr;
         ultimoPtr = nuevoPtr; // nuevo último nodo
     } // fin de else
     } // fin de la función insertarAlFinal
@@ -161,39 +167,114 @@ inline void lista<tipo>::insertarSSTF(const tipo & valor)
     insertarAlFrente(valor);
     if (!primeroPtr->siguiente) return; //Lo vacio
 
-
-    nodo<tipo>* i = primeroPtr;
-    nodo<tipo>* cabezal = i;
-    while (i) {
-        nodo<tipo>* minNodo = i;
-        nodo<tipo>* j = i->siguiente;
-        while (j) {
-            if (j->obtenerDatos() < minNodo->obtenerDatos()) {
-                minNodo = j;
-            }
-            j = j->siguiente;
+    nodo<tipo>* n = primeroPtr, *cabezal = primeroPtr;
+    while(n->siguientePtr != nullptr)
+    {
+        if(n->obtenerDatos() > n->siguientePtr->obtenerDatos())
+        {
+            tipo temp = n->obtenerDatos();
+            n->datos = n->siguientePtr->datos;
+            n->siguientePtr->datos= temp;
+            cabezal = n->siguientePtr;
         }
-        // Intercambiar datos de i y minNodo
-        if (minNodo != i) {
-            tipo temp = i->dato;
-            i->dato = minNodo->dato;
-            minNodo->dato = temp;
-        }
-        i = i->siguiente;
+        n = primeroPtr->siguientePtr;
     }
 
-    int diffAnterior = cabezal->obtenerDatos() - cabezal->anteriorPtr->obtenerDatos();
-    int diffSiguiente = cabezal->siguientePtr->obtenerDatos() - cabezal->obtenerDatos();
+    int distAnt = cabezal->obtenerDatos()-cabezal->anteriorPtr->obtenerDatos();
+    int distSig = cabezal->siguientePtr->obtenerDatos() - cabezal->obtenerDatos();
+}
+
+template<typename T>
+void lista<T>::insertarOrden(const T& d)
+{
+    nodo<T>* nuevo = new nodo<T>(d);
+    if (estaVacia()) {
+        primeroPtr = ultimoPtr = nuevo;
+        return;
+    }
+
+    nodo<T>* n = primeroPtr;
+    if (d < n->obtenerDatos()) {
+        nuevo->siguientePtr = primeroPtr;
+        primeroPtr->anteriorPtr = nuevo;
+        primeroPtr = nuevo;
+        return;
+    }
 
 
-    if(diffAnterior < diffSiguiente)
-    {
-        primeroPtr = cabezal->anteriorPtr;
-        //Despues que inserte los siguiente
-    }else
-    {
-        //viceversa
+
+    while (n->siguientePtr && n->siguientePtr->datos < d) {
+        n = n->siguientePtr;
+    }
+
+    if(n->datos == d){
+        delete nuevo;
+        return;
+    }
+
+    if (!n->siguientePtr) {
+        n->siguientePtr = nuevo;
+        nuevo->anteriorPtr = n;
+        ultimoPtr = nuevo;
+    }
+    else {
+        if(n->siguientePtr->datos == d){
+            delete nuevo;
+            return;
+        }
+        nuevo->siguientePtr = n->siguientePtr;
+        nuevo->anteriorPtr = n;
+        n->siguientePtr->anteriorPtr = nuevo;
+        n->siguientePtr = nuevo;
     }
 }
+
+template<typename t>
+bool lista<t>::eliminar(t& d) {
+    if (estaVacia()) {
+        return false;
+    }
+
+    nodo<t>* actual = primeroPtr;
+
+    while (actual && actual->obtenerDatos() != d) {
+        actual = actual->siguientePtr;
+    }
+
+    if (!actual) {
+        return false;
+    }
+
+    if (actual == primeroPtr) {
+        primeroPtr = actual->siguientePtr;
+        if (primeroPtr) {
+            primeroPtr->anteriorPtr = nullptr;
+        }
+    }
+    // Caso 2: Eliminar en medio o al final
+    else {
+        actual->anteriorPtr->siguientePtr = actual->siguientePtr;
+        if (actual->siguientePtr) {
+            actual->siguientePtr->anteriorPtr = actual->anteriorPtr;
+        }
+    }
+
+    delete actual; // Liberar memoria
+    return true;
+}
+
+template<typename tipo>
+nodo<tipo>* lista<tipo>::encontrarnodo(const tipo &valor)
+{
+    nodo<tipo>* n = primeroPtr;
+    while (n) {
+        if (n->obtenerDatos() == valor) {
+            return n;  // encontramos el nodo
+        }
+        n = n->siguientePtr;
+    }
+    return nullptr; // no se encontró
+}
+
 
 #endif // lista_H

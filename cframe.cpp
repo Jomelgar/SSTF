@@ -6,73 +6,143 @@ cframe::cframe(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::cframe)
 {
+    c = cola<int>();
     ui->setupUi(this);
+    movs = 0;
+    ui->tw_data->setColumnCount(1);
+    ui->tw_data->setHorizontalHeaderLabels(QStringList() << "Valor");
+    ui->tw_data->horizontalHeader()->setStretchLastSection(true);
+    ui->tw_data->setRowCount(0);
 }
+
 
 cframe::~cframe()
 {
     delete ui;
 }
 
-
-void cframe::on_BtnIniciar_clicked()
+void cframe::mostrarTabla()
 {
-    Cil = QInputDialog::getInt(this,"Digite el cilindro inicial",".:.");
-    std::list<int> lista = {88,96,54};
-    insertarSSTF(lista,Cil);
-    for (int n : lista) {
-        std::cout << n << " ";
+    ui->tw_data->setRowCount(0);
+
+    nodo<int>* n = L.primeroPtr;
+    int fila = 0;
+    while(n)
+    {
+        ui->tw_data->insertRow(fila);
+        ui->tw_data->setItem(fila, 0, new QTableWidgetItem(QString::number(n->obtenerDatos())));
+        n = n->siguientePtr;
+        fila++;
     }
-    std::cout << std::endl;
+}
+
+void cframe::on_btnPlus_clicked()
+{
+    int valor = ui->sb_value->value();
+    L.insertarOrden(valor);
+    mostrarTabla();
+}
+
+
+void cframe::on_btnMinus_clicked()
+{
+    int valor = ui->sb_value->value();
+    if (L.eliminar(valor)) {
+        QMessageBox::information(this, "Eliminar",
+        QString("Se eliminó el valor %1 correctamente.").arg(valor));
+        mostrarTabla();
+    } else {
+        QMessageBox::warning(this, "Eliminar",
+        QString("El valor %1 no se encontró en la lista.").arg(valor));
+    }
 
 }
 
-void cframe::insertarSSTF(std::list<int>& lista, int valor) {
-    // 1. Insertar al frente
-    lista.push_front(valor);
 
-    if (lista.size() <= 1) return ;
+void cframe::on_btnAccept_clicked()
+{
+    QStringList listaValores;
+    nodo<int>* n = L.primeroPtr;
+    while(n) {
+        listaValores << QString::number(n->obtenerDatos());
+        n = n->siguientePtr;
+    }
 
-    // 2. Selection sort manual usando iteradores
-    for (auto i = lista.begin(); i != lista.end(); ++i) {
-        auto minIt = i;
-        for (auto j = std::next(i); j != lista.end(); ++j) {
-            if (*j < *minIt) {
-                minIt = j;
+    if (listaValores.isEmpty()) {
+        QMessageBox::information(this, "SSTF", "La lista está vacía");
+        return;
+    }
+
+    bool ok;
+    QString valorStr = QInputDialog::getItem(this,"Seleccionar valor","Seleccione el cabezal:",
+        listaValores,0,false,&ok);
+
+    if (!ok) return;
+
+    int valor = valorStr.toInt();
+
+    lista<int> Ltemp;
+    nodo<int>* i = L.primeroPtr;
+    while (i) {
+        Ltemp.insertarOrden(i->datos); // o insertarAlFinal si ya está ordenado
+        i = i->siguientePtr;
+    }
+
+    nodo<int>* cabezal = Ltemp.encontrarnodo(valor);
+    if (!cabezal) return;
+    movs = 0;
+    c.enqueue(cabezal->datos);
+    while(cabezal)
+    {
+        if(!cabezal->anteriorPtr)
+        {
+            while(cabezal->siguientePtr){
+                c.enqueue(cabezal->siguientePtr->datos);
+                movs += std::fabs(cabezal->datos - cabezal->siguientePtr->datos);
+                cabezal = cabezal->siguientePtr;
+            }
+            cabezal = nullptr;
+        }else if(!cabezal->siguientePtr)
+        {
+            while(cabezal->anteriorPtr){
+                c.enqueue(cabezal->anteriorPtr->datos);
+                movs += std::fabs(cabezal->datos - cabezal->anteriorPtr->datos);
+                cabezal = cabezal->anteriorPtr;
+            }
+            cabezal = nullptr;
+        }else
+        {
+            nodo<int>* temp = cabezal;
+            int diffAnterior = std::fabs(cabezal->datos - cabezal->anteriorPtr->datos);
+            int diffSiguiente = std::fabs(cabezal->datos - cabezal->siguientePtr->datos);
+            if(diffAnterior < diffSiguiente)
+            {
+                c.enqueue(cabezal->anteriorPtr->datos);
+                movs += diffAnterior;
+                cabezal = cabezal->anteriorPtr;
+                cabezal->siguientePtr  = temp->siguientePtr;
+            }else
+            {
+                c.enqueue(cabezal->siguientePtr->datos);
+                movs += diffSiguiente;
+                cabezal = cabezal->siguientePtr;
+                cabezal->anteriorPtr  = temp->anteriorPtr;
             }
         }
-        if (minIt != i) {
-            std::swap(*i, *minIt);
-        }
     }
 
-    // 3. Encontrar "cabezal" (el valor recién insertado)
-    auto cabezal = std::find(lista.begin(), lista.end(), valor);
-    if (cabezal == lista.end()) return;
+    mostrarLista();
+    mostrarTabla();
+}
 
-    // 4. Calcular diferencias
-    int diffAnterior = INT_MAX, diffSiguiente = INT_MAX;
-
-    if (cabezal != lista.begin()) {
-        auto anterior = std::prev(cabezal);
-        diffAnterior = std::abs(*cabezal - *anterior);
+void cframe::mostrarLista()
+{
+    ui->lw_res->clear();
+    while(!c.estaListaVacia())
+    {
+        int valor;
+        c.dequeue(valor);
+        ui->lw_res->addItem(QString::number(valor));
     }
-    auto siguiente = std::next(cabezal);
-    if (siguiente != lista.end()) {
-        diffSiguiente = std::abs(*siguiente - *cabezal);
-    }
-
-    // 5. Mover cabezal
-    if (diffAnterior < diffSiguiente && cabezal != lista.begin()) {
-        // Mover hacia anterior
-        auto anterior = std::prev(cabezal);
-        lista.splice(anterior, lista, cabezal);
-        std::cout << "Cabezal movido hacia anterior\n";
-    }
-    else if (cabezal != std::prev(lista.end())) {
-        // Mover hacia siguiente
-        auto siguiente = std::next(cabezal);
-        lista.splice(std::next(siguiente), lista, cabezal);
-        std::cout << "Cabezal movido hacia siguiente\n";
-    }
+    ui->lw_res->addItem("Movimientos: "+ QString::number(movs));
 }

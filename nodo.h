@@ -5,9 +5,10 @@
 // Lista existe y poder utilizarla en la declaración friend de la línea 13
 template< typename tipo > class lista;
 template< typename tipo >
-class nodo
-{
+class nodo {
     friend class lista< tipo >; // hace de Lista una amiga
+    friend class cframe;
+
 public:
     nodo( const tipo & ); // constructor
     tipo obtenerDatos() const; // devuelve los datos en el nodo
@@ -18,11 +19,8 @@ private:
 }; // fin de la clase nodo
 // constructor
 template< typename tipo >
-nodo< tipo >::nodo( const tipo &info )
-    : datos( info ), siguientePtr( 0 )
-{
-    // cuerpo vacío
-} // fin del constructor de nodo
+nodo< tipo >::nodo( const tipo &info ): datos( info ), siguientePtr( 0 ), anteriorPtr(0) {} // fin del constructor
+
 // devuelve una copia de los datos en el nodo
 template< typename tipo >
 tipo nodo< tipo >::obtenerDatos() const

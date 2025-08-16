@@ -3,7 +3,7 @@
 
 #include "lista.h" // definición de la clase Lista
 template< typename tipo >
-class cola: private lista< tipo >
+class cola: lista< tipo >
 {
 public:
     // enqueue llama a la función miembro insertarAlFinal de Lista
@@ -26,6 +26,7 @@ public:
     {
         lista<tipo>::imprimir();
     } // fin de la función imprimirCola
+
 }; // fin de la clase Cola
 
 #endif // COLA_H

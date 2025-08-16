@@ -13,6 +13,177 @@
   <property name="windowTitle">
    <string>cframe</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* Radio button general */
+QRadioButton {
+    spacing: 8px;  /* espacio entre el círculo y el texto */
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Indicador (círculo) */
+QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;        /* círculo perfecto */
+    border: 2px solid #1E90FF; /* borde azul */
+    background-color: #fff;    /* fondo blanco */
+}
+
+/* Cuando está seleccionado */
+QRadioButton::indicator:checked {
+    background-color: #1E90FF; /* relleno azul */
+    border: 2px solid #1E90FF; 
+}
+
+/* Hover sobre el radio button */
+QRadioButton::indicator:hover {
+    border: 2px solid #187bcd;
+}
+
+QSpinBox{
+	font-size: 14px;
+	padding: 6px 12px;
+ 	font-family: &quot;Segoe UI&quot;, sans-serif;
+	border: 2px solid #555555;
+	border-radius: 5px;
+    background-color: #555555;
+    color: white;
+}
+
+QSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right;  /* Arriba derecha */
+    width: 20px;
+}
+
+QSpinBox::up-button:hover {
+    background-color: #AAAAAA;      /* Hover */
+}
+
+QSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right;  /* Abajo derecha */
+    width: 20px;
+}
+
+QSpinBox::down-button:hover {
+    background-color: #AAAAAA;
+}
+
+QPushButton {
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 6px 12px;
+    border: 2px solid #4CAF50;
+    background-color: #4CAF50;
+    color: white;
+    transition: all 0.3s;
+}
+
+/* Hover efecto */
+QPushButton:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+
+/* Botón Aceptar */
+QPushButton#btnAccept {
+    background-color: #1E90FF; /* Azul */
+    border: 2px solid #1E90FF;
+}
+
+QPushButton#btnAccept:hover {
+    background-color: #187bcd;
+    border-color: #187bcd;
+}
+
+/* Botón + */
+QPushButton#btnPlus {
+    background-color: #4CAF50; /* Verde */
+    border: 2px solid #4CAF50;
+}
+
+QPushButton#btnPlus:hover {
+    background-color: #45a049;
+    border-color: #45a049;
+}
+
+/* Botón - */
+QPushButton#btnMinus {
+    background-color: #f44336; /* Rojo */
+    border: 2px solid #f44336;
+}
+
+QPushButton#btnMinus:hover {
+    background-color: #da2c2c;
+    border-color: #da2c2c;
+}
+
+/* ===========================
+   LABELS
+=========================== */
+QLabel {
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 18px;
+    color: #333333;
+}
+
+/* ===========================
+   QTABLEWIDGET
+=========================== */
+QTableWidget {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+	color: #000000;
+    background-color: #f9f9f9;
+    gridline-color: #ddd;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 13px;
+}
+
+/* Encabezados */
+QHeaderView::section {
+    background-color: #1E90FF;
+	border: 2px solid #FFFFFF;
+    color: white;
+    padding: 4px;
+    border: none;
+}
+
+/* Selección de fila */
+QTableWidget::item:selected {
+    background-color: #87CEFA;
+    color: #000;
+}
+
+/* ===========================
+   QLISTWIDGET
+=========================== */
+QListWidget {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+	color: #000000;
+    background-color: #fefefe;
+    font-family: &quot;Segoe UI&quot;, sans-serif;
+    font-size: 13px;
+}
+
+/* Selección */
+QListWidget::item:selected {
+    background-color: #1E90FF;
+    color: white;
+    border-radius: 4px;
+}
+
+/* Hover en items */
+QListWidget::item:hover {
+    background-color: #add8e6;
+}
+</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
@@ -262,22 +433,104 @@
          <rect>
           <x>-90</x>
           <y>-160</y>
-          <width>771</width>
-          <height>491</height>
+          <width>871</width>
+          <height>651</height>
          </rect>
         </property>
        </widget>
-       <widget class="QPushButton" name="BtnIniciar">
+       <widget class="QPushButton" name="btnAccept">
         <property name="geometry">
          <rect>
-          <x>220</x>
-          <y>70</y>
+          <x>590</x>
+          <y>410</y>
           <width>90</width>
           <height>29</height>
          </rect>
         </property>
         <property name="text">
          <string>Iniciar</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="tw_data">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>110</y>
+          <width>471</width>
+          <height>351</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="sb_value">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>60</y>
+          <width>151</width>
+          <height>41</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Ingreso de Datos: </string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnPlus">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>70</y>
+          <width>41</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>+</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnMinus">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>70</y>
+          <width>41</width>
+          <height>29</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>-</string>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="lw_res">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>110</y>
+          <width>241</width>
+          <height>271</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>510</x>
+          <y>80</y>
+          <width>241</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Resultado:</string>
         </property>
        </widget>
       </widget>
